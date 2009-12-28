@@ -297,15 +297,21 @@ module Nokogiri
       # the attribute name, the value is a Nokogiri::XML::Attr
       # representing the attribute.
       def attributes
-        Hash[*(attribute_nodes.map { |node|
-          [node.node_name, node]
-        }.flatten)]
+        map_attributes { |node| node }
       end
 
       ####
-      # Returns a hash containing the node's attributes.
+      # Returns a hash containing the Nokogiri::XML::Attr node's attributes, 
+      # using the name as key.
       def to_h
-        Hash[*attribute_nodes.collect {|n| [n.name, n.value]}.flatten]
+        map_attributes { |node| node.value }
+      end
+ 
+      ####
+      # Returns a hash containing the node's attributes, using the name as key
+      # and the attributes as defined in the block, representing a Nokogiri::XML::Attr.
+      def map_attributes &block
+        Hash[*attribute_nodes.collect { |node| [node.name, block.call(node)] }.flatten]
       end
 
       ###
