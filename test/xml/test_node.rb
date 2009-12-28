@@ -609,6 +609,18 @@ module Nokogiri
         assert_equal 'No', attr['street'].value
       end
 
+      def test_to_h
+        assert node = @xml.search('//address').first
+        assert_nil(node['asdfasdfasdf'])
+        assert_equal('Yes', node['domestic'])
+
+        assert node = @xml.search('//address')[2]
+        h = node.to_h
+        assert_equal 2, h.size
+        assert_equal 'Yes', h['domestic']
+        assert_equal 'No', h['street']
+      end
+
       def test_path
         assert set = @xml.search('//employee')
         assert node = set.first

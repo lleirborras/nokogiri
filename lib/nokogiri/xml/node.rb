@@ -302,6 +302,12 @@ module Nokogiri
         }.flatten)]
       end
 
+      ####
+      # Returns a hash containing the node's attributes.
+      def to_h
+        Hash[*attribute_nodes.collect {|n| [n.name, n.value]}.flatten]
+      end
+
       ###
       # Get the attribute values for this Node.
       def values
